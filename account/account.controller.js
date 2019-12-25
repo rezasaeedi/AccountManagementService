@@ -11,6 +11,7 @@ router.post('/profile', registerProfile);
 router.put('/profile', updateProfile);
 router.get('/profile', getProfile);
 router.get('/wallet', getWallet);
+router.get('/transaction', getTransaction);
 
 function registerProfile(req, res, next) {
     accountService.create(req.body, res);
@@ -30,4 +31,8 @@ function getProfile(req, res) {
 
 function getWallet(req, res) {
     accountService.getWallet(req, res);
+}
+
+function getTransaction(req, res) {
+    accountService.getTransaction(req, res);
 }

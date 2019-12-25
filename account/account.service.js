@@ -14,7 +14,8 @@ module.exports = {
     create,
     update,
     getProfile,
-    getWallet
+    getWallet,
+    getTransaction
 };
 
 
@@ -190,8 +191,46 @@ function getWallet(req, res) {
                         console.log('profileID: ' + profileID);
                         Account.Wallet.findOne({ 'profileID': new ObjectId(profileID) }, function (err, result) {
                             if (!err && result != null) {
-                                console.log('here... ');
                                 res.status(200).json({ wallet: result });
+                            }
+                            else {
+                                res.status(400).json({ message: err });
+                            }
+                        });
+                    }
+                    else
+                        res.status(400).json({ message: err });
+                });
+            }
+        });
+    }
+    else {
+        res.status(400).json('Invalid request');
+    }
+
+}
+
+function getTransaction(req, res) {
+
+    const token = req.get('authorization').split(' ')[1]; // Extract the token from Bearer
+    if (token) {
+        request({
+            method: "GET",
+            uri: authServiceURL + "/user/role",
+            headers: { 'Authorization': 'Bearer ' + token }
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var jsonBody = JSON.parse(body);
+                var email = jsonBody["email"];
+                console.log("Email: " + email);
+                Account.Profile.findOne({ 'email': email }, function (err, result) {
+                    if (!err && result != null) {
+                        const profileID = result.id;
+                        console.log('profileID: ' + profileID);
+                        Account.Transaction.find({ 'profileID': new ObjectId(profileID) }, function (err, result) {
+                            if (!err && result != null) {
+                                console.log('here... ');
+                                res.status(200).json(result);
                             }
                             else {
                                 console.log(result);
