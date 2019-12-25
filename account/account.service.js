@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
 var request = require('request');
+var ObjectId = require('mongodb').ObjectID;
 //var request = require('./await-request')
 const authServiceIP = config.authServiceIP;
 const authServicePort = config.authServicePort;
@@ -12,8 +13,8 @@ const Account = db.Account;
 module.exports = {
     create,
     update,
-    getProfile
-
+    getProfile,
+    getWallet
 };
 
 
@@ -167,6 +168,81 @@ function getProfile(req, res) {
     }
     else {
         res.status(400).json('Invalid request');
+    }
+}
+
+function getWallet(req, res) {
+
+    const token = req.get('authorization').split(' ')[1]; // Extract the token from Bearer
+    if (token) {
+        request({
+            method: "GET",
+            uri: authServiceURL + "/user/role",
+            headers: { 'Authorization': 'Bearer ' + token }
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var jsonBody = JSON.parse(body);
+                var email = jsonBody["email"];
+                console.log("Email: " + email);
+                Account.Profile.findOne({ 'email': email }, function (err, result) {
+                    if (!err && result != null) {
+                        const profileID = result.id;
+                        console.log('profileID: ' + profileID);
+                        Account.Wallet.findOne({ 'profileID': new ObjectId(profileID) }, function (err, result) {
+                            if (!err && result != null) {
+                                console.log('here... ');
+                                res.status(200).json({ wallet: result });
+                            }
+                            else {
+                                console.log(result);
+                                res.status(400).json({ message: err });
+                            }
+                        });
+                    }
+                    else
+                        res.status(400).json({ message: err });
+                });
+            }
+        });
+    }
+    else {
+        res.status(400).json('Invalid request');
+    }
+
+}
+
+function getEmailByToken(req, result, err) {
+    const token = req.get('authorization').split(' ')[1]; // Extract the token from Bearer
+    if (token) {
+        request({
+            method: "GET",
+            uri: authServiceURL + "/user/role",
+            headers: { 'Authorization': 'Bearer ' + token }
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var jsonBody = JSON.parse(body);
+                var email = jsonBody["email"];
+                //await new Promise(resolve => setTimeout(resolve, 1200));
+                result = email;
+                console.log('1' + email);
+                return;
+                console.log('1');
+            }
+            else {
+                var err = {
+                    statusCode: statusCode,
+                    message: response.message
+                };
+                console.log('2');
+            }
+        });
+    }
+    else {
+        var err = {
+            statusCode: 400,
+            message: 'Invalid request'
+        };
+        console.log('3');
     }
 }
 

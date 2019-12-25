@@ -10,6 +10,7 @@ router.get('/heartbeat', heartbeat);
 router.post('/profile', registerProfile);
 router.put('/profile', updateProfile);
 router.get('/profile', getProfile);
+router.get('/wallet', getWallet);
 
 function registerProfile(req, res, next) {
     accountService.create(req.body, res);
@@ -25,4 +26,8 @@ function updateProfile(req, res) {
 
 function getProfile(req, res) {
     accountService.getProfile(req, res);
+}
+
+function getWallet(req, res) {
+    accountService.getWallet(req, res);
 }
