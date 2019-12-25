@@ -6,7 +6,7 @@ const profileSchema = new Schema({
     name: { type: String },
     phoneNo: { type: String },
     nationalCode: { type: String },
-    addrress: { type: String },
+    address: { type: String },
     postalCode: { type: String}
 });
 
