@@ -17,6 +17,9 @@ function jwt() {
 }
 
 async function isRevoked(req, payload, done) {
+    console.log('Enetr upate....');
+    const token = req.get('authorization').split(' ')[1]; // Extract the token from Bearer 
+    console.log('Token: ' + token);
     const user = await accountService.getById(payload.sub);
 
     // revoke token if user no longer exists

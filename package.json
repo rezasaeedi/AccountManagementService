@@ -20,8 +20,9 @@
         "jsonwebtoken": "^8.5.1",
         "mongodb": "^3.2.7",
         "mongoose": "^5.7.5",
+        "request": "*",
         "rootpath": "^0.1.2",
-        "request": "*"
+        "zarinpal-checkout": "^0.2.7"
     },
     "devDependencies": {
         "nodemon": "^1.19.1"
