@@ -10,12 +10,22 @@ const authServicePort = config.authServicePort;
 const authServiceURL = "http://" + authServiceIP + ":" + authServicePort + "/auth/v1";
 const Account = db.Account;
 
+const ZarinpalCheckout = require('zarinpal-checkout');
+/**
+ * Create ZarinPal
+ * @param {String} `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` [Merchant ID]
+ * @param {Boolean} false [toggle `Sandbox` mode]
+ */
+const zarinpal = ZarinpalCheckout.create('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', true);
+
 module.exports = {
     create,
     update,
     getProfile,
     getWallet,
-    getTransaction
+    getTransaction,
+    pay,
+    verify
 };
 
 
@@ -285,4 +295,78 @@ function getEmailByToken(req, result, err) {
     }
 }
 
+function pay(req, res) {
+    const token = req.get('authorization').split(' ')[1]; // Extract the token from Bearer
+    if (token) {
+        request({
+            method: "GET",
+            uri: authServiceURL + "/user/role",
+            headers: { 'Authorization': 'Bearer ' + token }
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var jsonBody = JSON.parse(body);
+                var email = jsonBody["email"];
+                console.log("Email: " + email);
+                Account.Profile.findOne({ 'email': email }, function (err, result) {
+                    if (!err && result != null) {
+                        const profileID = result.id;
+                        const tel = result.phoneNo;
+                        console.log('profileID: ' + profileID);
+                        Account.Transaction.findOne({ 'profileID': new ObjectId(profileID), 'orderID': req.orderID }, function (err, result) {
+                            if (!err && result != null) {
+                                console.log(result);
 
+                                /**
+                             * PaymentRequest [module]
+                             * @return {String} URL [Payement Authority]
+                             */
+                                console.log("enter zarinpal...");
+                                zarinpal.PaymentRequest({
+                                    Amount: result.amount, // In Tomans
+                                    CallbackURL: 'https://your-safe-api/example/zarinpal/validate',
+                                    Description: 'A Payment from Node.JS',
+                                    Email: email,
+                                    Mobile: tel
+                                }).then(response => {
+                                    if (response.status === 100) {
+                                        console.log(response.url);
+                                        res.redirect(response.url);
+                                    }
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+
+
+                            }
+                            else {
+                                console.log(result);
+                                res.status(400).json({ message: err });
+                            }
+                        });
+                    }
+                    else
+                        res.status(400).json({ message: err });
+                });
+            }
+        });
+    }
+    else {
+        res.status(400).json('Invalid request');
+    }
+}
+
+
+function verify(req, res){
+    zarinpal.PaymentVerification({
+        Amount: '1000', // In Tomans
+        Authority: req.query.authority,
+      }).then(response => {
+        if (response.status !== 100) {
+          console.log('Empty!');
+        } else {
+          console.log(`Verified! Ref ID: ${response.RefID}`);
+        }
+      }).catch(err => {
+        console.error(err);
+      });
+}

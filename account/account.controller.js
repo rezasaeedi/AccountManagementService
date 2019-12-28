@@ -12,6 +12,8 @@ router.put('/profile', updateProfile);
 router.get('/profile', getProfile);
 router.get('/wallet', getWallet);
 router.get('/transaction', getTransaction);
+router.post('/pay', pay);
+router.post('/pay/callback', pay);
 
 function registerProfile(req, res, next) {
     accountService.create(req.body, res);
@@ -35,4 +37,12 @@ function getWallet(req, res) {
 
 function getTransaction(req, res) {
     accountService.getTransaction(req, res);
+}
+
+function pay(req, res) {
+    accountService.pay(req, res);
+}
+
+function verify(req, res) {
+    accountService.verify(req, res);
 }
