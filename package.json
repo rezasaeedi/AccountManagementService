@@ -5,11 +5,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/cornflourblue/node-mongo-registration-login-api.git"
+        "url": "https://github.com/rezasaeedi/AccountManagementService.git"
     },
     "scripts": {
-        "start": "nodemon ./server.js",
-        "start-dev": "nodemon ./server.js"
+        "start": "node ./server.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
