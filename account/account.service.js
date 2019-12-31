@@ -29,7 +29,7 @@ module.exports = {
 };
 
 
-async function create(userParam, res) {
+function create(userParam, res) {
     //add authenticate
     console.log("authServiceURL:" + authServiceURL);
 
@@ -38,6 +38,7 @@ async function create(userParam, res) {
         form: { email: userParam.email, password: userParam.password }
     }, function (error, response, body) {
         if (!error && response.statusCode == 201) {
+            console.log("***********: " + response.statusMessage);
             Account.Profile.findOne({ 'email': userParam.email }, async function (err, result) {
                 if (err || result != null) {
                     res.status(400).json({ message: 'Email ' + userParam.email + ' is already taken' });
@@ -61,10 +62,21 @@ async function create(userParam, res) {
                             console.log("enter wallet save...");
                             const newWallet = new Account.Wallet({
                                 profileID: result._id,
-                                value: 0
+                                value: 200000
                             });
                             //save wallet
                             newWallet.save();
+
+                            const newTransaction = new Account.Transaction({
+                                profileID: result._id,
+                                createdAt: new Date(),
+                                amount: 1000,
+                                orderID: 100,
+                                refID: 100
+                            });
+                            //save wallet
+                            newTransaction.save();
+                            console.log(newTransaction);
                         }
                     });
 
@@ -84,7 +96,12 @@ async function create(userParam, res) {
 
         }
         else {
-            res.status(response.statusCode).json(response.statusMessage);
+            if (error) {
+                console.log("***********" + error);
+                res.status(400).json({ message: error });
+            }
+            else
+                res.status(response.statusCode).json(response.statusMessage);
         }
     });
 
@@ -144,7 +161,10 @@ function update(req, res) {
                 });
 
             } else {
-                res.status(response.statusCode).json(response.statusMessage);
+                if (error)
+                    res.status(400).json({ message: err });
+                else
+                    res.status(response.statusCode).json(response.statusMessage);
             }
         });
     }
@@ -174,6 +194,12 @@ function getProfile(req, res) {
                     else
                         res.status(400).json({ message: err });
                 });
+            }
+            else {
+                if (error)
+                    res.status(400).json({ message: error });
+                else
+                    res.status(response.statusCode).json(response.statusMessage);
             }
         });
     }
@@ -211,6 +237,12 @@ function getWallet(req, res) {
                     else
                         res.status(400).json({ message: err });
                 });
+            }
+            else {
+                if (error)
+                    res.status(400).json({ message: error });
+                else
+                    res.status(response.statusCode).json(response.statusMessage);
             }
         });
     }
@@ -251,6 +283,12 @@ function getTransaction(req, res) {
                     else
                         res.status(400).json({ message: err });
                 });
+            }
+            else {
+                if (error)
+                    res.status(400).json({ message: error });
+                else
+                    res.status(response.statusCode).json(response.statusMessage);
             }
         });
     }
@@ -304,6 +342,7 @@ function pay(req, res) {
             headers: { 'Authorization': 'Bearer ' + token }
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
+                const orderID = req.body.orderID;
                 var jsonBody = JSON.parse(body);
                 var email = jsonBody["email"];
                 console.log("Email: " + email);
@@ -312,9 +351,10 @@ function pay(req, res) {
                         const profileID = result.id;
                         const tel = result.phoneNo;
                         console.log('profileID: ' + profileID);
-                        Account.Transaction.findOne({ 'profileID': new ObjectId(profileID), 'orderID': req.orderID }, function (err, result) {
+                        console.log('orderID: ' + orderID);
+                        Account.Transaction.findOne({ 'profileID': new ObjectId(profileID), 'orderID': orderID }, function (err, result) {
                             if (!err && result != null) {
-                                console.log(result);
+                                console.log("result: " + result);
 
                                 /**
                              * PaymentRequest [module]
@@ -336,17 +376,30 @@ function pay(req, res) {
                                     console.error(err);
                                 });
 
-
                             }
                             else {
-                                console.log(result);
-                                res.status(400).json({ message: err });
+                                if (err) {
+                                    console.log(err);
+                                    res.status(400).json({ message: err });
+
+                                }
+                                else {
+                                    console.log("No transaction found.");
+                                    res.status(400).json({ message: "No transaction found." });
+                                }
+
                             }
                         });
                     }
                     else
                         res.status(400).json({ message: err });
                 });
+            }
+            else {
+                if (error)
+                    res.status(400).json({ message: error });
+                else
+                    res.status(response.statusCode).json(response.statusMessage);
             }
         });
     }
@@ -356,17 +409,17 @@ function pay(req, res) {
 }
 
 
-function verify(req, res){
+function verify(req, res) {
     zarinpal.PaymentVerification({
         Amount: '1000', // In Tomans
         Authority: req.query.authority,
-      }).then(response => {
+    }).then(response => {
         if (response.status !== 100) {
-          console.log('Empty!');
+            console.log('Empty!');
         } else {
-          console.log(`Verified! Ref ID: ${response.RefID}`);
+            console.log(`Verified! Ref ID: ${response.RefID}`);
         }
-      }).catch(err => {
+    }).catch(err => {
         console.error(err);
-      });
+    });
 }

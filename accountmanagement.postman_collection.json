@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "42e4fed5-7e75-47cd-90d9-b7888805b803",
+		"name": "accountmanagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:4000/account/heartbeat",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/account/heartbeat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"account",
+						"heartbeat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4000/account/profile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "reza",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "reza1@yahoo.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "abcd1234",
+							"type": "text"
+						},
+						{
+							"key": "postalCode",
+							"value": "57479877",
+							"type": "text"
+						},
+						{
+							"key": "addrress",
+							"value": "mashhad",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:4000/account/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"account",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4000/account/profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlemExQHlhaG9vLmNvbSIsImlhdCI6MTU3NzUyMzQyNCwiZXhwIjoxNTc3NjA5ODI0LCJhdWQiOiJGVU0tRWxlY3QgQ2xpZW50IiwiaXNzIjoiRlVNLUVsZWN0IFNlcnZlciIsInN1YiI6InJlemExQHlhaG9vLmNvbSJ9.zhg_qsJSf25VqmBV9U_yVY428Sy7UuFgGvuIPOA9Riivnv28lTRiLLxT9ua53UNo8oEiYQpI7pijkufjVz7pRw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "hasan",
+							"type": "text"
+						},
+						{
+							"key": "phoneNo",
+							"value": "32131",
+							"type": "text"
+						},
+						{
+							"key": "nationalCode",
+							"value": "231321",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "mash",
+							"type": "text"
+						},
+						{
+							"key": "postalCode",
+							"value": "2313213",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:4000/account/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"account",
+						"profile"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4000/account/profile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlemExQHlhaG9vLmNvbSIsImlhdCI6MTU3NzUyMzQyNCwiZXhwIjoxNTc3NjA5ODI0LCJhdWQiOiJGVU0tRWxlY3QgQ2xpZW50IiwiaXNzIjoiRlVNLUVsZWN0IFNlcnZlciIsInN1YiI6InJlemExQHlhaG9vLmNvbSJ9.zhg_qsJSf25VqmBV9U_yVY428Sy7UuFgGvuIPOA9Riivnv28lTRiLLxT9ua53UNo8oEiYQpI7pijkufjVz7pRw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:4000/account/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"account",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4000/account/wallet",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlemFAeWFob28uY29tIiwiaWF0IjoxNTc3Mjc5ODgyLCJleHAiOjE1NzczNjYyODIsImF1ZCI6IkZVTS1FbGVjdCBDbGllbnQiLCJpc3MiOiJGVU0tRWxlY3QgU2VydmVyIiwic3ViIjoicmV6YUB5YWhvby5jb20ifQ.Iuy9BRKuc_F_V2PcJNdUHC9wi32uIHW8kXVyaXCoH07djwF0kvh6mZRtR0VqFzHkLLTcDtJadGJ-MNjCfT3Uyw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/account/wallet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"account",
+						"wallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4000/account/transaction",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlemExQHlhaG9vLmNvbSIsImlhdCI6MTU3NzUyMzQyNCwiZXhwIjoxNTc3NjA5ODI0LCJhdWQiOiJGVU0tRWxlY3QgQ2xpZW50IiwiaXNzIjoiRlVNLUVsZWN0IFNlcnZlciIsInN1YiI6InJlemExQHlhaG9vLmNvbSJ9.zhg_qsJSf25VqmBV9U_yVY428Sy7UuFgGvuIPOA9Riivnv28lTRiLLxT9ua53UNo8oEiYQpI7pijkufjVz7pRw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/account/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"account",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4000/account/pay",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJlemExQHlhaG9vLmNvbSIsImlhdCI6MTU3NzUyMzQyNCwiZXhwIjoxNTc3NjA5ODI0LCJhdWQiOiJGVU0tRWxlY3QgQ2xpZW50IiwiaXNzIjoiRlVNLUVsZWN0IFNlcnZlciIsInN1YiI6InJlemExQHlhaG9vLmNvbSJ9.zhg_qsJSf25VqmBV9U_yVY428Sy7UuFgGvuIPOA9Riivnv28lTRiLLxT9ua53UNo8oEiYQpI7pijkufjVz7pRw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "orderID",
+							"value": "1111",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:4000/account/pay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"account",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
