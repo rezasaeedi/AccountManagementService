@@ -21,5 +21,36 @@ $ npm install
 $ npm start
 ```
 
+## Run By Docker
+First Build docker image by
+
+```
+docker build -t mashhad65/accountmanagement .
+```
+
+Then Up docker-compose
+
+```
+docker-compose up
+```
+
+`Notice:` First must downloaded `sayid/authentiq` and `mongo` images from docker
+
+```
+docker pull sayid/authentiq
+docker pull mongo
+```
+
+You can view images list by
+
+```
+docker image ls
+```
+
+And can delete image by
+
+```
+docker image rm -f <imageID>
+```
 
  
