@@ -3,19 +3,19 @@ services:
   app:
     container_name: app
     restart: always
-    image: reza
+    image: mashhad65/accountmanagement
     ports:
       - "4000:4000"
     links:
       - mongo
       - auth
   mongo:
-    container_name: mongo
+    container_name: db
     image: mongo
     ports:
       - "27017:27017"
   auth:
     container_name: auth
-    image: sayid/auth
+    image: sayid/authentiq
     ports:
       - "2000:2000"

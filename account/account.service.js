@@ -7,7 +7,7 @@ var ObjectId = require('mongodb').ObjectID;
 //var request = require('./await-request')
 const authServiceIP = config.authServiceIP;
 const authServicePort = config.authServicePort;
-const authServiceURL = "http://" + authServiceIP + ":" + authServicePort + "/auth/v1";
+const authServiceURL = "http://" + authServiceIP + ":" + authServicePort + "/authentiq/v1";
 const Account = db.Account;
 
 const ZarinpalCheckout = require('zarinpal-checkout');
@@ -38,7 +38,10 @@ function create(userParam, res) {
         form: { email: userParam.email, password: userParam.password }
     }, function (error, response, body) {
         if (!error && response.statusCode == 201) {
-            console.log("***********: " + response.statusMessage);
+
+            var jsonBody = JSON.parse(body);
+            var token = jsonBody["token"];
+
             Account.Profile.findOne({ 'email': userParam.email }, async function (err, result) {
                 if (err || result != null) {
                     res.status(400).json({ message: 'Email ' + userParam.email + ' is already taken' });
@@ -59,7 +62,7 @@ function create(userParam, res) {
                     Account.Profile.findOne({ 'email': userParam.email }, function (err, result) {
                         console.log(result);
                         if (!err && result != null) {
-                            console.log("enter wallet save...");
+                            console.log("wallet creation...");
                             const newWallet = new Account.Wallet({
                                 profileID: result._id,
                                 value: 200000
@@ -67,6 +70,7 @@ function create(userParam, res) {
                             //save wallet
                             newWallet.save();
 
+                            console.log("sample transaction creation...");
                             const newTransaction = new Account.Transaction({
                                 profileID: result._id,
                                 createdAt: new Date(),
@@ -74,13 +78,19 @@ function create(userParam, res) {
                                 orderID: 100,
                                 refID: 100
                             });
-                            //save wallet
+                            //save Sample Transaction
                             newTransaction.save();
                             console.log(newTransaction);
                         }
+                        else{
+                            res.status(400).json({ message: err });
+                        }
                     });
 
+                    res.status(200).json({ token: token });
+
                     //login to auth
+                    /*
                     request.post({
                         url: authServiceURL + '/user/login',
                         form: { email: userParam.email, password: userParam.password }
@@ -90,7 +100,7 @@ function create(userParam, res) {
                             var token = jsonBody["token"];
                             res.status(200).json({ token: token });
                         }
-                    });
+                    });*/
                 }
             });
 
