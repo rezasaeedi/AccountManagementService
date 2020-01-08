@@ -6,7 +6,7 @@ Node.js microservice with MongoDB database.
 ## install
 
 ```
-git clone https://github.com/LanmeijingLucky/Microservices-with-Node.js-Email-example.git
+git clone https://github.com/rezasaeedi/AccountManagementService.git
 ```
 
 ## install the dependencies
