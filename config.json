@@ -1,6 +1,6 @@
 ﻿{
     "authServiceIP": "authentiq",
     "authServicePort": "2052",
-    "connectionString": "mongodb://account_db:27018/account",
+    "connectionString": "mongodb://accountico_db:27017/account",
     "secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING"
 }
