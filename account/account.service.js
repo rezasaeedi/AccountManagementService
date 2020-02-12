@@ -65,49 +65,26 @@ function create(userParam, res) {
                             console.log("wallet creation...");
                             const newWallet = new Account.Wallet({
                                 profileID: result._id,
-                                value: 200000
+                                value: 0
                             });
                             //save wallet
                             newWallet.save();
 
-                            console.log("sample transaction creation...");
-                            const newTransaction = new Account.Transaction({
-                                profileID: result._id,
-                                createdAt: new Date(),
-                                amount: 1000,
-                                orderID: 100,
-                                refID: 100
-                            });
-                            //save Sample Transaction
-                            newTransaction.save();
-                            console.log(newTransaction);
                         }
                         else{
                             res.status(400).json({ message: err });
                         }
                     });
 
-                    res.status(200).json({ token: token });
+                    res.status(200).json("Registered successfully.");
 
-                    //login to auth
-                    /*
-                    request.post({
-                        url: authServiceURL + '/user/login',
-                        form: { email: userParam.email, password: userParam.password }
-                    }, async function (error, response, body) {
-                        if (!error && response.statusCode == 200) {
-                            var jsonBody = JSON.parse(body);
-                            var token = jsonBody["token"];
-                            res.status(200).json({ token: token });
-                        }
-                    });*/
                 }
             });
 
         }
         else {
             if (error) {
-                console.log("***********" + error);
+                console.log( error);
                 res.status(400).json({ message: error });
             }
             else
@@ -373,7 +350,7 @@ function pay(req, res) {
                                 console.log("enter zarinpal...");
                                 zarinpal.PaymentRequest({
                                     Amount: result.amount, // In Tomans
-                                    CallbackURL: 'https://your-safe-api/example/zarinpal/validate',
+                                    CallbackURL: process.env.CallbackURL,
                                     Description: 'A Payment from Node.JS',
                                     Email: email,
                                     Mobile: tel
